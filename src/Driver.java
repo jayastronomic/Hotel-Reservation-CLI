@@ -1,6 +1,5 @@
 package src;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -46,29 +45,31 @@ public class Driver {
     System.out.println("5. Add Test Data");
     System.out.println("6. Back to Main Menu");
     System.out.println("-----------------------------------------");
-    System.out.println(ANSI_YELLOW  + "Please select a number from the menu option" + ANSI_RESET);
+    System.out.println(
+      ANSI_YELLOW + "Please select a number from the menu option" + ANSI_RESET
+    );
   }
 
-  public static Customer createCustomer(String firstName, String lastName){
-      Customer newCustomer = new Customer(firstName, lastName);
-      return newCustomer;
+  public static Customer createCustomer(String firstName, String lastName) {
+    Customer newCustomer = new Customer(firstName, lastName);
+    return newCustomer;
   }
 
   public static void showReservationsAdmin() {
     System.out.println(ANSI_YELLOW + "RESERVATIONS" + ANSI_RESET);
-    System.out.println(ANSI_YELLOW +"------------"+ ANSI_RESET);
+    System.out.println(ANSI_YELLOW + "------------" + ANSI_RESET);
     Reservation.ppAll();
   }
 
   public static void showRoomsAdmin() {
     System.out.println(ANSI_YELLOW + "ROOMS" + ANSI_RESET);
-    System.out.println(ANSI_YELLOW +"-----"+ ANSI_RESET);
+    System.out.println(ANSI_YELLOW + "-----" + ANSI_RESET);
     Room.ppAll();
   }
 
   public static void showCustomersAdmin() {
     System.out.println(ANSI_YELLOW + "CUSTOMERS" + ANSI_RESET);
-    System.out.println(ANSI_YELLOW +"---------"+ ANSI_RESET);
+    System.out.println(ANSI_YELLOW + "---------" + ANSI_RESET);
     Customer.ppAll();
   }
 
@@ -80,15 +81,20 @@ public class Driver {
     }
   }
 
-public static void createReservation(Customer customer, Room room){
-        System.out.println("Choose a Checkin Date: Format(MM/DD/YYYY)");
-        String checkInDate = scanner.nextLine();
-        System.out.print("Choose a Checkout Date: Format(MM/DD/YYYY)");
-        String checkOutDate = scanner.nextLine();
-        // Create Reservation
-        Reservation newReservation = new Reservation(checkInDate, checkOutDate, customer, room);
-        System.out.println(newReservation.toString());     
-}
+  public static void createReservation(Customer customer, Room room) {
+    System.out.println("Choose a Checkin Date: Format(MM/DD/YYYY)");
+    String checkInDate = scanner.nextLine();
+    System.out.print("Choose a Checkout Date: Format(MM/DD/YYYY)");
+    String checkOutDate = scanner.nextLine();
+    // Create Reservation
+    Reservation newReservation = new Reservation(
+      checkInDate,
+      checkOutDate,
+      customer,
+      room
+    );
+    System.out.println(newReservation.toString());
+  }
 
   public static void showRooms() {
     Room.ppAll();
@@ -99,62 +105,79 @@ public static void createReservation(Customer customer, Room room){
     int selection = Integer.parseInt(scanner.nextLine());
     //Check if room number is valid
     boolean roomExist = false;
-    for(int i = 0; i < Room.all().size(); i++){
-        Room room = Room.all().get(i);
-        if(selection == room.getRoomNumber()){
-            roomExist = true;
-            break;
-        } else {
-            roomExist = false;
-        }
+    for (int i = 0; i < Room.all().size(); i++) {
+      Room room = Room.all().get(i);
+      if (selection == room.getRoomNumber()) {
+        roomExist = true;
+        break;
+      } else {
+        roomExist = false;
+      }
     }
-    if(roomExist == false) {
-        System.out.println(ANSI_RED + "Not a valid room number" + ANSI_RESET);
+    if (roomExist == false) {
+      System.out.println(ANSI_RED + "Not a valid room number" + ANSI_RESET);
     } else {
-    Room room = Seed.chooseRoom(selection);
-    System.out.println( ANSI_BLUE + "You chose: " + ANSI_RESET + ANSI_YELLOW + "Room " + room.getRoomNumber() + ANSI_RESET);
-    System.out.println("");
-    System.out.println( ANSI_BLUE +  "Is that okay? (Enter 1 for Yes/ 0 for No)" + ANSI_RESET );
-    selection = Integer.parseInt(scanner.nextLine());
-    if (selection == 1) {
-      if (checkCustomerLog()) {
-        System.out.println("Enter your first name to pull up your account:");
-        String selection2 = scanner.nextLine();
-        System.out.println(selection2);
-        Customer loadedCustomer = Customer.findByFirstName(selection2);
-        if ((loadedCustomer.getFirstName() == selection2)) {
+      Room room = Seed.chooseRoom(selection);
+      System.out.println(
+        ANSI_BLUE +
+        "You chose: " +
+        ANSI_RESET +
+        ANSI_YELLOW +
+        "Room " +
+        room.getRoomNumber() +
+        ANSI_RESET
+      );
+      System.out.println("");
+      System.out.println(
+        ANSI_BLUE + "Is that okay? (Enter 1 for Yes/ 0 for No)" + ANSI_RESET
+      );
+      selection = Integer.parseInt(scanner.nextLine());
+      if (selection == 1) {
+        if (checkCustomerLog()) {
+          System.out.println("Enter your first name to pull up your account:");
+          String selection2 = scanner.nextLine();
+          System.out.println(selection2);
+          Customer loadedCustomer = Customer.findByFirstName(selection2);
+          if ((loadedCustomer.getFirstName() == selection2)) {
+            System.out.println("");
+            System.out.println(
+              "You entered the wrong name or create an account."
+            );
+            System.out.println("");
+            enterMainMenu();
+          } else {
+            System.out.println(
+              "Taking you to reservations " +
+              ANSI_YELLOW +
+              loadedCustomer.getFirstName() +
+              ANSI_RESET
+            );
+            System.out.println("");
+            createReservation(loadedCustomer, room);
+          }
+        } else {
           System.out.println("");
           System.out.println(
-            "You entered the wrong name or create an account."
+            ANSI_RED +
+            "There are no accounts in our system. Create account first." +
+            ANSI_RESET
           );
           System.out.println("");
           enterMainMenu();
-        } else {
-          System.out.println("Taking you to reservations " + ANSI_YELLOW + loadedCustomer.getFirstName() + ANSI_RESET);
-          System.out.println("");
-          createReservation(loadedCustomer, room);
         }
+      } else if (selection == 0) {
+        System.out.println("");
+        System.out.println("Cancelling....");
+        System.out.println("Going back to main menu......");
+        System.out.println("");
+        enterMainMenu();
       } else {
         System.out.println("");
-        System.out.println(
-         ANSI_RED +  "There are no accounts in our system. Create account first." + ANSI_RESET
-        );
+        System.out.println("Please Enter 1 or 0.");
         System.out.println("");
         enterMainMenu();
       }
-    } else if (selection == 0) {
-      System.out.println("");
-      System.out.println("Cancelling....");
-      System.out.println("Going back to main menu......");
-      System.out.println("");
-      enterMainMenu();
-    } else {
-      System.out.println("");
-      System.out.println("Please Enter 1 or 0.");
-      System.out.println("");
-      enterMainMenu();
     }
-   }
   }
 
   public static void enterMainMenu() {
@@ -164,11 +187,17 @@ public static void createReservation(Customer customer, Room room){
 
       if (selection == 1) {
         System.out.println("");
-        System.out.println(ANSI_BLUE + "Looking for available rooms....." + ANSI_RESET);
+        System.out.println(
+          ANSI_BLUE + "Looking for available rooms....." + ANSI_RESET
+        );
         System.out.println("");
         if (Room.all().size() == 0) {
-          System.out.println(ANSI_RED + "There are no rooms available!" + ANSI_RESET);
-          System.out.println(ANSI_RED + "Admin must create the roooms first!" + ANSI_RESET);
+          System.out.println(
+            ANSI_RED + "There are no rooms available!" + ANSI_RESET
+          );
+          System.out.println(
+            ANSI_RED + "Admin must create the roooms first!" + ANSI_RESET
+          );
           System.out.println("");
           enterMainMenu();
         }
@@ -179,39 +208,69 @@ public static void createReservation(Customer customer, Room room){
       }
 
       if (selection == 3) {
-        String firstName ="";
+        String firstName = "";
         String lastName = "";
         boolean keepRunning = true;
         //Get first name from customer
-        while(keepRunning){
-        System.out.print( ANSI_BLUE + "Enter First Name:" + ANSI_RESET + " ");
-       String selection2 = scanner.nextLine();
-       System.out.println( ANSI_BLUE + "You entered: " + ANSI_RESET + ANSI_YELLOW +  selection2 + ANSI_RESET);
-       System.out.println(ANSI_BLUE +"Is that correct? (Enter 1 for Yes/ 0 for No)" + ANSI_RESET);
-       int selection3 = Integer.parseInt(scanner.nextLine());
-       if(selection3 == 1){
-           firstName = selection2;
-           keepRunning = false;
-           }
+        while (keepRunning) {
+          System.out.print(ANSI_BLUE + "Enter First Name:" + ANSI_RESET + " ");
+          String selection2 = scanner.nextLine();
+          System.out.println(
+            ANSI_BLUE +
+            "You entered: " +
+            ANSI_RESET +
+            ANSI_YELLOW +
+            selection2 +
+            ANSI_RESET
+          );
+          System.out.println(
+            ANSI_BLUE +
+            "Is that correct? (Enter 1 for Yes/ 0 for No)" +
+            ANSI_RESET
+          );
+          int selection3 = Integer.parseInt(scanner.nextLine());
+          if (selection3 == 1) {
+            firstName = selection2;
+            keepRunning = false;
+          }
         }
         System.out.println("");
         keepRunning = true;
         //Get last name from customer
-        while(keepRunning){
-            System.out.print( ANSI_BLUE + "Enter Last Name:" + ANSI_RESET + " ");
-            String selection2 = scanner.nextLine();
-            System.out.println( ANSI_BLUE + "You entered: " + ANSI_RESET + ANSI_YELLOW +  selection2 + ANSI_RESET);
-            System.out.println(ANSI_BLUE +"Is that correct? (Enter 1 for Yes/ 0 for No)" + ANSI_RESET);
-            int selection3 = Integer.parseInt(scanner.nextLine());
-            if(selection3 == 1){
-               lastName = selection2;
-                keepRunning = false;
-            }
+        while (keepRunning) {
+          System.out.print(ANSI_BLUE + "Enter Last Name:" + ANSI_RESET + " ");
+          String selection2 = scanner.nextLine();
+          System.out.println(
+            ANSI_BLUE +
+            "You entered: " +
+            ANSI_RESET +
+            ANSI_YELLOW +
+            selection2 +
+            ANSI_RESET
+          );
+          System.out.println(
+            ANSI_BLUE +
+            "Is that correct? (Enter 1 for Yes/ 0 for No)" +
+            ANSI_RESET
+          );
+          int selection3 = Integer.parseInt(scanner.nextLine());
+          if (selection3 == 1) {
+            lastName = selection2;
+            keepRunning = false;
+          }
         }
         // //create customer
         Customer newCustomer = createCustomer(firstName, lastName);
         System.out.println("");
-        System.out.println("Account for " + ANSI_YELLOW + newCustomer.getFirstName() + " " + newCustomer.getLastName() + ANSI_RESET + " created!");
+        System.out.println(
+          "Account for " +
+          ANSI_YELLOW +
+          newCustomer.getFirstName() +
+          " " +
+          newCustomer.getLastName() +
+          ANSI_RESET +
+          " created!"
+        );
       }
       if (selection == 4) {
         System.out.println("");
@@ -250,11 +309,13 @@ public static void createReservation(Customer customer, Room room){
         }
       }
       if (selection == 2) {
-          if (Room.all().size() == 0){
-            System.out.println(ANSI_BLUE + "There are no rooms in the log" + ANSI_RESET);  
-          } else {
-            showRoomsAdmin();  
-          }   
+        if (Room.all().size() == 0) {
+          System.out.println(
+            ANSI_BLUE + "There are no rooms in the log" + ANSI_RESET
+          );
+        } else {
+          showRoomsAdmin();
+        }
       }
       if (selection == 3) {
         if (Reservation.all().size() == 0) {
@@ -266,9 +327,15 @@ public static void createReservation(Customer customer, Room room){
         }
       }
       if (selection == 4) {
-            Room newRoom = Seed.addRoom();
-            System.out.println( ANSI_YELLOW + "Room " + newRoom.getRoomNumber() + " added!" + ANSI_RESET);
-          }
+        Room newRoom = Seed.addRoom();
+        System.out.println(
+          ANSI_YELLOW +
+          "Room " +
+          newRoom.getRoomNumber() +
+          " added!" +
+          ANSI_RESET
+        );
+      }
       if (selection == 5) {
         System.out.println("");
         System.out.println(ANSI_BLUE + "Creating Rooms........" + ANSI_RESET);
@@ -280,7 +347,7 @@ public static void createReservation(Customer customer, Room room){
           enterAdminMenu();
         }
         Seed.createRooms();
-        System.out.println(ANSI_BLUE +"Rooms Created!" + ANSI_RESET);
+        System.out.println(ANSI_BLUE + "Rooms Created!" + ANSI_RESET);
         System.out.println("");
         enterAdminMenu();
       }
@@ -297,6 +364,6 @@ public static void createReservation(Customer customer, Room room){
   }
 
   public static void main(String[] args) {
-   enterMainMenu();
+    enterMainMenu();
   }
 }

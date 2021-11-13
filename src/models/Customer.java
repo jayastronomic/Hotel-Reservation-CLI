@@ -54,7 +54,11 @@ public class Customer {
     for (int i = 0; i < Customer.all().size(); i++) {
       Customer customer = Customer.all().get(i);
       System.out.println(
-        customer.getId()+ ". " + customer.getFirstName() + " " + customer.getLastName()
+        customer.getId() +
+        ". " +
+        customer.getFirstName() +
+        " " +
+        customer.getLastName()
       );
     }
   }

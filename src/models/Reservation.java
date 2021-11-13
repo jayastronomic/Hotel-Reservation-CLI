@@ -1,6 +1,5 @@
 package src.models;
 
-
 import java.util.ArrayList;
 
 public class Reservation {
@@ -62,7 +61,19 @@ public class Reservation {
   public static void ppAll() {
     for (int i = 0; i < Reservation.all().size(); i++) {
       Reservation reservation = Reservation.all().get(i);
-      System.out.println(reservation.getId() + ". Checkin Date: " +  reservation.getCheckInDate() + " Checkout Date: " + reservation.getCheckOutDate() + " Customer: " + reservation.getCustomer().getFirstName() + " " + reservation.getCustomer().getLastName() + " Room: #" + reservation.getRoom().getRoomNumber());
+      System.out.println(
+        reservation.getId() +
+        ". Checkin Date: " +
+        reservation.getCheckInDate() +
+        " Checkout Date: " +
+        reservation.getCheckOutDate() +
+        " Customer: " +
+        reservation.getCustomer().getFirstName() +
+        " " +
+        reservation.getCustomer().getLastName() +
+        " Room: #" +
+        reservation.getRoom().getRoomNumber()
+      );
     }
   }
 
